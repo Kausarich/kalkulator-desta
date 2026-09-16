@@ -406,8 +406,10 @@ class AdvancedCalculatorApp(tk.Tk):
         # Right Graphical Compass Canvas
         ttk.Label(right_card, text="🧭 Interactive Compass Dial", style="CardHeader.TLabel").pack(anchor="w", pady=(0, 10))
 
+        self.current_qibla_bearing = 0.0
         self.compass_canvas = tk.Canvas(right_card, bg="#1e1e2e", highlightthickness=0)
         self.compass_canvas.pack(fill="both", expand=True)
+        self.compass_canvas.bind("<Configure>", lambda e: self._draw_compass(self.current_qibla_bearing))
 
         self._on_city_selected(None)
 
@@ -430,6 +432,8 @@ class AdvancedCalculatorApp(tk.Tk):
             bearing = res["bearing_deg"]
             direction = res["compass_direction"]
             dist = res["distance_km"]
+
+            self.current_qibla_bearing = bearing
 
             self.q_bearing_lbl.config(text=f"Bearing: {bearing}°")
             self.q_dir_lbl.config(text=f"Direction: {direction} (from North)")
